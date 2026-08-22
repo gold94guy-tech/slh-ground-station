@@ -15,3 +15,17 @@ class Task:
     title: str
     status: TaskStatus = TaskStatus.OPEN
     description: str = ""
+
+
+def format_tasks(tasks: list[Task]) -> str:
+    if not tasks:
+        return "📋 No tasks yet."
+
+    lines = ["📋 SLH TASKS", ""]
+
+    for task in tasks:
+        lines.append(
+            f"{task.id} — {task.title} [{task.status.value}]"
+        )
+
+    return "\n".join(lines)
