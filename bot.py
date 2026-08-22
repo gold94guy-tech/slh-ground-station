@@ -30,10 +30,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("SLH Ground Station online.")
 
 
+async def status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(
+        "🟢 SYSTEM STATUS\n\n"
+        "System: ONLINE\n"
+        "Telegram: CONNECTED\n"
+        "Task Engine: ONLINE"
+    )
+
+
 def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("status", status))
     application.add_handler(CommandHandler("dashboard", dashboard))
     application.add_handler(CommandHandler("tasks", tasks))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("create_task", start_task_creation)], states={1: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_id)], 2: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_title)], 3: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_description)]}, fallbacks=[]))
