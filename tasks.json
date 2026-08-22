@@ -4,5 +4,11 @@
     "title": "Task Engine",
     "status": "DONE",
     "description": "Core task management system"
+  },
+  {
+    "id": "GS-003",
+    "title": "Telegram Control Center",
+    "status": "IN_PROGRESS",
+    "description": "Complete Telegram-based control interface for SLH Ground Station"
   }
 ]
