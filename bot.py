@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from app.commands.router import help_command
+from app.dashboard.dashboard import get_dashboard
 
 
 load_dotenv()
@@ -14,6 +15,10 @@ if not TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN is not set in .env")
 
 
+async def dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(get_dashboard())
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("SLH Ground Station online.")
 
@@ -22,6 +27,7 @@ def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("dashboard", dashboard))
     application.add_handler(CommandHandler("help", help_command))
 
     print("SLH Ground Station bot starting...")
