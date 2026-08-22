@@ -41,3 +41,8 @@ def create_task(
         title=title,
         description=description,
     )
+
+
+def update_task_status(task: Task, status: TaskStatus) -> Task:
+    task.status = status
+    return task
