@@ -45,3 +45,15 @@ def add_task(task: Task) -> None:
     tasks = load_tasks()
     tasks.append(task)
     save_tasks(tasks)
+
+
+def update_task_status(task_id: str, status: TaskStatus) -> bool:
+    tasks = load_tasks()
+
+    for task in tasks:
+        if task.id == task_id:
+            task.status = status
+            save_tasks(tasks)
+            return True
+
+    return False
