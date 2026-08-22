@@ -94,3 +94,84 @@ async def receive_task_description(
     )
 
     return -1
+
+
+async def start_status_update(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    await update.message.reply_text(
+        "🔄 Update Task Status\n\n"
+        "Send the task ID:"
+    )
+    return 10
+
+
+async def receive_status_task_id(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    task_id = update.message.text.strip()
+
+    if not task_id:
+        await update.message.reply_text(
+            "⚠️ Task ID cannot be empty. Send it again:"
+        )
+        return 10
+
+    context.user_data["status_task_id"] = task_id
+
+    await update.message.reply_text(
+        "Choose the new status:\n\n"
+        "OPEN\n"
+        "IN_PROGRESS\n"
+        "DONE\n"
+        "BLOCKED"
+    )
+    return 11
+
+
+async def receive_status_value(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    status_value = update.message.text.strip().upper()
+
+    if status_value not in {"OPEN", "IN_PROGRESS", "DONE", "BLOCKED"}:
+        await update.message.reply_text(
+            "⚠️ Invalid status.\n\n"
+            "Use: OPEN, IN_PROGRESS, DONE, or BLOCKED"
+        )
+        return 11
+
+    task_id = context.user_data.get("status_task_id")
+
+    if not task_id:
+        await update.message.reply_text(
+            "⚠️ Task ID is missing. Please start again."
+        )
+        context.user_data.clear()
+        return -1
+
+    from app.tasks.task_engine import TaskStatus
+    from app.tasks.task_store import update_task_status
+
+    updated = update_task_status(
+        task_id,
+        TaskStatus(status_value),
+    )
+
+    context.user_data.clear()
+
+    if not updated:
+        await update.message.reply_text(
+            f"⚠️ Task not found: {task_id}"
+        )
+        return -1
+
+    await update.message.reply_text(
+        f"✅ Task updated!\n\n"
+        f"{task_id} — Status: {status_value}"
+    )
+
+    return -1
