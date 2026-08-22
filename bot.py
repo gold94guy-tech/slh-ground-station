@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from app.commands.router import help_command
 
 
 load_dotenv()
@@ -21,7 +22,7 @@ def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("help", start))
+    application.add_handler(CommandHandler("help", help_command))
 
     print("SLH Ground Station bot starting...")
     application.run_polling()
