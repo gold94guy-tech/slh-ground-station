@@ -5,6 +5,8 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from app.commands.router import help_command
 from app.dashboard.dashboard import get_dashboard
+from app.tasks.task_engine import format_tasks
+from app.tasks.task_store import load_tasks
 
 
 load_dotenv()
@@ -13,6 +15,10 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 if not TOKEN:
     raise RuntimeError("TELEGRAM_BOT_TOKEN is not set in .env")
+
+
+async def tasks(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(format_tasks(load_tasks()))
 
 
 async def dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -28,6 +34,7 @@ def main() -> None:
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("dashboard", dashboard))
+    application.add_handler(CommandHandler("tasks", tasks))
     application.add_handler(CommandHandler("help", help_command))
 
     print("SLH Ground Station bot starting...")
