@@ -39,3 +39,9 @@ def load_tasks() -> list[Task]:
         )
         for item in data
     ]
+
+
+def add_task(task: Task) -> None:
+    tasks = load_tasks()
+    tasks.append(task)
+    save_tasks(tasks)
