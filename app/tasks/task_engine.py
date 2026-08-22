@@ -29,3 +29,15 @@ def format_tasks(tasks: list[Task]) -> str:
         )
 
     return "\n".join(lines)
+
+
+def create_task(
+    task_id: str,
+    title: str,
+    description: str = "",
+) -> Task:
+    return Task(
+        id=task_id,
+        title=title,
+        description=description,
+    )
