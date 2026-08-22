@@ -7,7 +7,7 @@ from app.commands.router import help_command
 from app.dashboard.dashboard import get_dashboard
 from app.tasks.task_engine import format_tasks
 from app.tasks.task_store import load_tasks
-from app.tasks.task_conversation import start_task_creation, receive_task_id, receive_task_title, receive_task_description
+from app.tasks.task_conversation import start_task_creation, receive_task_id, receive_task_title, receive_task_description, start_status_update, receive_status_task_id, receive_status_value
 
 
 load_dotenv()
@@ -37,6 +37,7 @@ def main() -> None:
     application.add_handler(CommandHandler("dashboard", dashboard))
     application.add_handler(CommandHandler("tasks", tasks))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("create_task", start_task_creation)], states={1: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_id)], 2: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_title)], 3: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_description)]}, fallbacks=[]))
+    application.add_handler(ConversationHandler(entry_points=[CommandHandler("update_status", start_status_update)], states={10: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_task_id)], 11: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_value)]}, fallbacks=[]))
     application.add_handler(CommandHandler("help", help_command))
 
     print("SLH Ground Station bot starting...")
