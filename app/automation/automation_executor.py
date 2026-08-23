@@ -37,3 +37,23 @@ def validate_automation(automation: Automation) -> ExecutionResult:
         automation_id=automation.id,
         message="Automation is ready for execution.",
     )
+
+
+def execute_automation(automation: Automation) -> ExecutionResult:
+    validation = validate_automation(automation)
+
+    if not validation.success:
+        return validation
+
+    if automation.action == "TEST_ACTION":
+        return ExecutionResult(
+            success=True,
+            automation_id=automation.id,
+            message="TEST_ACTION executed successfully.",
+        )
+
+    return ExecutionResult(
+        success=False,
+        automation_id=automation.id,
+        message=f"Unsupported automation action: {automation.action}",
+    )
