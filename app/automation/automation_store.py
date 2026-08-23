@@ -15,6 +15,7 @@ def save_automations(automations: list[Automation]) -> None:
             "status": automation.status.value,
             "description": automation.description,
             "action": automation.action,
+            "authorized": automation.authorized,
         }
         for automation in automations
     ]
@@ -40,6 +41,7 @@ def load_automations() -> list[Automation]:
             status=AutomationStatus(item["status"]),
             description=item.get("description", ""),
             action=item.get("action", ""),
+            authorized=item.get("authorized", False),
         )
         for item in data
     ]

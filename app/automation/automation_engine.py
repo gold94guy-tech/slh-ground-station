@@ -16,6 +16,7 @@ class Automation:
     status: AutomationStatus = AutomationStatus.DISABLED
     description: str = ""
     action: str = ""
+    authorized: bool = False
 
 
 def create_automation(
@@ -23,12 +24,14 @@ def create_automation(
     name: str,
     description: str = "",
     action: str = "",
+    authorized: bool = False,
 ) -> Automation:
     return Automation(
         id=automation_id,
         name=name,
         description=description,
         action=action,
+        authorized=authorized,
     )
 
 

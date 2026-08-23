@@ -51,6 +51,19 @@ def execute_automation(automation: Automation) -> ExecutionResult:
         )
         return validation
 
+    if not automation.authorized:
+        result = ExecutionResult(
+            success=False,
+            automation_id=automation.id,
+            message="Automation is not authorized for execution.",
+        )
+        log_execution(
+            result.automation_id,
+            result.success,
+            result.message,
+        )
+        return result
+
     if automation.action == "TEST_ACTION":
         result = ExecutionResult(
             success=True,
