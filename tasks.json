@@ -10,5 +10,11 @@
     "title": "Telegram Control Center",
     "status": "DONE",
     "description": "Complete Telegram-based control interface for SLH Ground Station"
+  },
+  {
+    "id": "GS-004",
+    "title": "Automation Control Layer",
+    "status": "OPEN",
+    "description": "Automation control layer for managing and monitoring future SLH Ground Station automations"
   }
 ]
