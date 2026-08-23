@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "id": "AUTO-001",
+    "name": "SLH Test Automation",
+    "status": "DISABLED",
+    "description": "Control layer test automation"
+  }
+]

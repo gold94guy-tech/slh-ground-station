@@ -50,3 +50,11 @@ def format_automations(automations: list[Automation]) -> str:
         )
 
     return "\n".join(lines)
+
+
+def set_automation_status(
+    automation: Automation,
+    status: AutomationStatus,
+) -> Automation:
+    automation.status = status
+    return automation

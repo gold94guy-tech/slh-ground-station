@@ -62,3 +62,18 @@ def update_automation_status(
             return True
 
     return False
+
+
+def set_automation_status(
+    automation_id: str,
+    status: AutomationStatus,
+) -> bool:
+    automations = load_automations()
+
+    for automation in automations:
+        if automation.id == automation_id:
+            automation.status = status
+            save_automations(automations)
+            return True
+
+    return False
