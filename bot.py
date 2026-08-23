@@ -9,6 +9,7 @@ from app.tasks.task_engine import format_tasks
 from app.tasks.task_store import load_tasks
 from app.automation.automation_engine import format_automations
 from app.automation.automation_store import load_automations
+from app.automation.automation_logger import format_execution_log
 from app.automation.automation_conversation import start_automation_status, receive_automation_id, receive_automation_status
 from app.tasks.task_conversation import start_task_creation, receive_task_id, receive_task_title, receive_task_description, start_status_update, receive_status_task_id, receive_status_value
 
@@ -55,6 +56,11 @@ async def automation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         format_automations(load_automations())
     )
 
+async def automation_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(
+        format_execution_log()
+    )
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("SLH Ground Station online.")
@@ -78,6 +84,7 @@ def main() -> None:
     application.add_handler(CommandHandler("log", log))
     application.add_handler(CommandHandler("tasks", tasks))
     application.add_handler(CommandHandler("automation", automation))
+    application.add_handler(CommandHandler("automation_log", automation_log))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("automation_status", start_automation_status)], states={20: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_automation_id)], 21: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_automation_status)]}, fallbacks=[]))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("create_task", start_task_creation)], states={1: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_id)], 2: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_title)], 3: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_description)]}, fallbacks=[]))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("update_status", start_status_update)], states={10: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_task_id)], 11: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_value)]}, fallbacks=[]))
