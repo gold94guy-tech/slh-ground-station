@@ -15,17 +15,20 @@ class Automation:
     name: str
     status: AutomationStatus = AutomationStatus.DISABLED
     description: str = ""
+    action: str = ""
 
 
 def create_automation(
     automation_id: str,
     name: str,
     description: str = "",
+    action: str = "",
 ) -> Automation:
     return Automation(
         id=automation_id,
         name=name,
         description=description,
+        action=action,
     )
 
 
