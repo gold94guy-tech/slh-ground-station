@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from app.automation.automation_engine import Automation
+from app.automation.automation_logger import log_execution
 
 
 @dataclass
@@ -43,17 +44,34 @@ def execute_automation(automation: Automation) -> ExecutionResult:
     validation = validate_automation(automation)
 
     if not validation.success:
+        log_execution(
+            validation.automation_id,
+            validation.success,
+            validation.message,
+        )
         return validation
 
     if automation.action == "TEST_ACTION":
-        return ExecutionResult(
+        result = ExecutionResult(
             success=True,
             automation_id=automation.id,
             message="TEST_ACTION executed successfully.",
         )
+        log_execution(
+            result.automation_id,
+            result.success,
+            result.message,
+        )
+        return result
 
-    return ExecutionResult(
+    result = ExecutionResult(
         success=False,
         automation_id=automation.id,
         message=f"Unsupported automation action: {automation.action}",
     )
+    log_execution(
+        result.automation_id,
+        result.success,
+        result.message,
+    )
+    return result
