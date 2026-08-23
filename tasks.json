@@ -8,7 +8,7 @@
   {
     "id": "GS-003",
     "title": "Telegram Control Center",
-    "status": "IN_PROGRESS",
+    "status": "DONE",
     "description": "Complete Telegram-based control interface for SLH Ground Station"
   }
 ]
