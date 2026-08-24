@@ -52,6 +52,23 @@ async def log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("\n".join(lines))
 
 
+def is_admin(update: Update) -> bool:
+    admin_id = os.getenv("TELEGRAM_ADMIN_ID")
+    user = update.effective_user
+
+    return bool(
+        admin_id
+        and user
+        and str(user.id) == admin_id
+    )
+
+
+async def myid(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(
+        f"Telegram User ID: {update.effective_user.id}"
+    )
+
+
 async def automation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         format_automations(load_automations())
@@ -99,6 +116,7 @@ def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("myid", myid))
     application.add_handler(CommandHandler("status", status))
     application.add_handler(CommandHandler("dashboard", dashboard))
     application.add_handler(CommandHandler("log", log))
