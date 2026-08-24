@@ -26,6 +26,21 @@ def save_automations(automations: list[Automation]) -> None:
     )
 
 
+def set_automation_authorization(
+    automation_id: str,
+    authorized: bool,
+) -> bool:
+    automations = load_automations()
+
+    for automation in automations:
+        if automation.id == automation_id:
+            automation.authorized = authorized
+            save_automations(automations)
+            return True
+
+    return False
+
+
 def load_automations() -> list[Automation]:
     if not AUTOMATIONS_FILE.exists():
         return []
