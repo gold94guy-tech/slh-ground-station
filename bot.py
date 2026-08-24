@@ -98,6 +98,47 @@ async def automation_auth(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
     await update.message.reply_text("\n".join(lines))
 
+async def automation_set_auth(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not is_admin(update):
+        await update.message.reply_text(
+            "⛔ Admin authorization required."
+        )
+        return
+
+    if len(context.args) != 2:
+        await update.message.reply_text(
+            "Usage: /automation_set_auth <automation_id> <on|off>"
+        )
+        return
+
+    automation_id = context.args[0]
+    value = context.args[1].lower()
+
+    if value not in {"on", "off"}:
+        await update.message.reply_text(
+            "Authorization value must be: on or off."
+        )
+        return
+
+    authorized = value == "on"
+
+    success = set_automation_authorization(
+        automation_id,
+        authorized,
+    )
+
+    if not success:
+        await update.message.reply_text(
+            f"❌ Automation not found: {automation_id}"
+        )
+        return
+
+    status = "AUTHORIZED" if authorized else "BLOCKED"
+
+    await update.message.reply_text(
+        f"🔐 {automation_id}: {status}"
+    )
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("SLH Ground Station online.")
@@ -124,6 +165,7 @@ def main() -> None:
     application.add_handler(CommandHandler("automation", automation))
     application.add_handler(CommandHandler("automation_log", automation_log))
     application.add_handler(CommandHandler("automation_auth", automation_auth))
+    application.add_handler(CommandHandler("automation_set_auth", automation_set_auth))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("automation_status", start_automation_status)], states={20: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_automation_id)], 21: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_automation_status)]}, fallbacks=[]))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("create_task", start_task_creation)], states={1: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_id)], 2: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_title)], 3: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_task_description)]}, fallbacks=[]))
     application.add_handler(ConversationHandler(entry_points=[CommandHandler("update_status", start_status_update)], states={10: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_task_id)], 11: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_status_value)]}, fallbacks=[]))
