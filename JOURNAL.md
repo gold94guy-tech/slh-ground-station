@@ -57,3 +57,37 @@
 - Verify after every change.
 - Update JOURNAL.md after meaningful milestones.
 - Commit small, clear checkpoints.
+
+## 2026-08-25 — QA Verification
+
+### Telegram Control Center
+- `/status` verified.
+- `/dashboard` verified.
+- `/tasks` verified.
+- Task creation through Telegram verified.
+- Task status transition `OPEN -> IN_PROGRESS -> DONE` verified.
+- Task persistence verified through `/tasks`.
+- `/log` verified with empty and test-event states.
+- `/help` synchronized with currently registered commands.
+- `/help` fix committed as `09aa338`.
+
+### Automation Control Layer
+- Automation listing verified.
+- Automation status transition `DISABLED -> READY` verified and persisted.
+- Authorization transition `BLOCKED -> AUTHORIZED -> BLOCKED` verified and persisted.
+- `/automation_log` verified.
+- Automation Executor code reviewed.
+- Execution path through Telegram is not implemented yet.
+- `AUTO-001` currently has an empty `action`, so execution was intentionally not attempted.
+- Safety finding: execution should require valid action, authorization, and `READY` status.
+
+### QA Data
+- `QA-001` created through Telegram and completed as a task workflow test.
+- `AUTO-001` remains as the current automation test fixture.
+- QA data was intentionally left unchanged at this checkpoint.
+
+### Next Work
+- Complete Automation execution flow.
+- Add safe action/configuration management.
+- Reconcile `/dashboard`, `/help`, `/osif`, and `/settings`.
+- Perform a second full QA pass before inviting the project supervisor.

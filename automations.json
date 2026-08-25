@@ -2,9 +2,9 @@
   {
     "id": "AUTO-001",
     "name": "SLH Test Automation",
-    "status": "DISABLED",
+    "status": "READY",
     "description": "Control layer test automation",
     "action": "",
-    "authorized": false
+    "authorized": true
   }
 ]

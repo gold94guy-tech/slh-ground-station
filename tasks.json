@@ -16,5 +16,11 @@
     "title": "Automation Control Layer",
     "status": "OPEN",
     "description": "Automation control layer for managing and monitoring future SLH Ground Station automations"
+  },
+  {
+    "id": "QA-001",
+    "title": "QA Verification Task",
+    "status": "DONE",
+    "description": "QA verification of SLH Ground Station task workflow"
   }
 ]
