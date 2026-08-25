@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "timestamp": "2026-08-25T16:51:01.931109+00:00",
+    "automation_id": "QA-EXEC-001",
+    "success": false,
+    "message": "Automation is not READY for execution: DISABLED"
+  }
+]
