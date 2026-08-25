@@ -51,6 +51,19 @@ def execute_automation(automation: Automation) -> ExecutionResult:
         )
         return validation
 
+    if automation.status.value != "READY":
+        result = ExecutionResult(
+            success=False,
+            automation_id=automation.id,
+            message=f"Automation is not READY for execution: {automation.status.value}",
+        )
+        log_execution(
+            result.automation_id,
+            result.success,
+            result.message,
+        )
+        return result
+
     if not automation.authorized:
         result = ExecutionResult(
             success=False,
