@@ -4,7 +4,7 @@
     "name": "SLH Test Automation",
     "status": "READY",
     "description": "Control layer test automation",
-    "action": "",
+    "action": "TEST_ACTION",
     "authorized": true
   }
 ]
