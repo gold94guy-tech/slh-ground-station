@@ -41,6 +41,22 @@ def set_automation_authorization(
     return False
 
 
+def set_automation_action(
+    automation_id: str,
+    action: str,
+) -> bool:
+    automations = load_automations()
+
+    for automation in automations:
+        if automation.id == automation_id:
+            automation.action = action
+            save_automations(automations)
+            return True
+
+    return False
+
+
+
 def load_automations() -> list[Automation]:
     if not AUTOMATIONS_FILE.exists():
         return []
