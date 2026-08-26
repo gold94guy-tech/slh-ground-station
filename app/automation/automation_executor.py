@@ -4,6 +4,9 @@ from app.automation.automation_engine import Automation
 from app.automation.automation_logger import log_execution
 
 
+ALLOWED_ACTIONS = {"TEST_ACTION"}
+
+
 @dataclass
 class ExecutionResult:
     success: bool
