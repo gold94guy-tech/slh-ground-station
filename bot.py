@@ -11,6 +11,7 @@ from app.automation.automation_engine import format_automations
 from app.automation.automation_store import load_automations
 from app.automation.automation_store import set_automation_authorization
 from app.automation.automation_logger import format_execution_log
+from app.automation.automation_executor import execute_automation
 from app.automation.automation_conversation import start_automation_status, receive_automation_id, receive_automation_status
 from app.tasks.task_conversation import start_task_creation, receive_task_id, receive_task_title, receive_task_description, start_status_update, receive_status_task_id, receive_status_value
 
@@ -77,6 +78,37 @@ async def automation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 async def automation_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         format_execution_log()
+    )
+
+
+async def automation_run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if len(context.args) != 1:
+        await update.message.reply_text(
+            "Usage: /automation_run <automation_id>"
+        )
+        return
+
+    automation_id = context.args[0]
+    automations = load_automations()
+
+    automation = next(
+        (item for item in automations if item.id == automation_id),
+        None,
+    )
+
+    if automation is None:
+        await update.message.reply_text(
+            f"❌ Automation not found: {automation_id}"
+        )
+        return
+
+    result = execute_automation(automation)
+
+    status = "✅" if result.success else "🛑"
+
+    await update.message.reply_text(
+        f"{status} {result.automation_id}\n"
+        f"{result.message}"
     )
 
 async def automation_auth(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -163,6 +195,7 @@ def main() -> None:
     application.add_handler(CommandHandler("log", log))
     application.add_handler(CommandHandler("tasks", tasks))
     application.add_handler(CommandHandler("automation", automation))
+    application.add_handler(CommandHandler("automation_run", automation_run))
     application.add_handler(CommandHandler("automation_log", automation_log))
     application.add_handler(CommandHandler("automation_auth", automation_auth))
     application.add_handler(CommandHandler("automation_set_auth", automation_set_auth))

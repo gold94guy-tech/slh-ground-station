@@ -4,5 +4,23 @@
     "automation_id": "QA-EXEC-001",
     "success": false,
     "message": "Automation is not READY for execution: DISABLED"
+  },
+  {
+    "timestamp": "2026-08-26T07:31:51.088562+00:00",
+    "automation_id": "QA-RUN-001",
+    "success": false,
+    "message": "Automation is not READY for execution: DISABLED"
+  },
+  {
+    "timestamp": "2026-08-26T07:31:51.089038+00:00",
+    "automation_id": "QA-RUN-002",
+    "success": false,
+    "message": "Automation is not authorized for execution."
+  },
+  {
+    "timestamp": "2026-08-26T07:31:51.089483+00:00",
+    "automation_id": "QA-RUN-003",
+    "success": true,
+    "message": "TEST_ACTION executed successfully."
   }
 ]
